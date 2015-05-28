@@ -14,20 +14,22 @@ def broadcast(data):
 class MyHandler(Handler):
     
     def on_open(self):
-        print ('server open')
+        print ('Someone has entered the chat.')
         
     def on_close(self):
-        print ('server closed')
-        global done
-        done = True;
+        print ('Someone has exited the chat.')
 
     def on_msg(self, data):
         global clients
-        if self not in clients:
-            clients.append(self)
+        if 'QUIT' in data:
+            global done
+            done = False
+        else:
+            if self not in clients:
+                clients.append(self)
 
-        broadcast(data)
-        print(data)
+            broadcast(data)
+            print(data)
 
 port = 8888
 server = Listener(port, MyHandler)
