@@ -43,6 +43,7 @@ def save_transcript():
 class Client(Handler):
     def on_open(self):
         print ('Client started')
+        client.do_send('A client has entered the chat.')
         # options()
 
     def on_close(self):
@@ -53,14 +54,13 @@ class Client(Handler):
         print data
 
 
-host, port = 'localhost', 8888
+host, port = '192.168.0.19', 8888
 client = Client(host, port)
 
 thread = Thread(target=periodic_poll)
 thread.daemon = True  # die when the main thread dies 
 thread.start()
 
-client.do_send('A client has entered the chat.')
 while not done:
     choiceInput = sys.stdin.readline().rstrip()
 
