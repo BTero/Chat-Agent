@@ -18,6 +18,7 @@ class Agent(Handler):
 
     def on_close(self):
         print ('Agent closed')
+        self.do_send('QUIT')
         
     def on_msg(self, data):
         print data
