@@ -23,7 +23,7 @@ class Agent(Handler):
         print data
 
         
-host, port = '192.168.56.1', 8888
+host, port = 'localhost', 8888
 agent = Agent(host, port)
 
 thread = Thread(target=periodic_poll)
