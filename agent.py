@@ -1,7 +1,15 @@
-from network import Handler, poll, poll_for
-
+from network import Handler, poll
+from threading import Thread
+from time import sleep
+import sys
 
 done = False
+
+def periodic_poll():
+    while 1:
+        poll()
+        sleep(0.05)  # seconds
+
 
 class Agent(Handler):
     
@@ -17,9 +25,14 @@ class Agent(Handler):
         
 host, port = 'localhost', 8888
 agent = Agent(host, port)
+
+thread = Thread(target=periodic_poll)
+thread.daemon = True  # die when the main thread dies
+thread.start()
+
+agent.do_send('An agent has entered the chat.')
 while not done:
-    poll(timeout=0.05)
-    choiceInput = 'Agent:' + str(raw_input())
-    agent.do_send(str(choiceInput))
+    choiceInput = 'Agent: ' + sys.stdin.readline().rstrip()
+    agent.do_send(choiceInput)
 
 agent.do_close() # cleanup
