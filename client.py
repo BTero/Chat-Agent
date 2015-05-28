@@ -37,8 +37,9 @@ def append_data_to_transcript(data):
     transcript.append('\n' + data)
 
 def save_transcript():
-     with open("transcript.txt", "w") as text_file:
-            text_file.write(transcript)
+    with open("transcript.txt", "wb") as text_file:
+        for s in transcript:
+            text_file.write(str(s))
 
 class Client(Handler):
     def on_open(self):
@@ -67,7 +68,7 @@ while not done:
     if ':q' in choiceInput:
         client.do_close()
     elif ':s' in choiceInput:
-        client.saveTranscript()
+        save_transcript()
     else:
         choiceInput = 'Client: ' + choiceInput
         client.do_send(choiceInput)
