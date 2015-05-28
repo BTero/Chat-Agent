@@ -4,6 +4,13 @@ from network import Listener, Handler, poll
 done = False
 clients = []
 
+def broadcast(data):
+    global clients
+    print len(clients)
+
+    for c in clients:
+        c.do_send(data)
+
 class MyHandler(Handler):
     
     def on_open(self):
@@ -15,20 +22,12 @@ class MyHandler(Handler):
         done = True;
 
     def on_msg(self, data):
-        print(data)
-        # global clients
-        # for c in clients:
-        #     c.do_send(data)
-
-    @staticmethod
-    def on_accept(self, h):
-        print 'hello'
         global clients
-        if len(clients) < 2:
-            h.do_send("Welcome to the chat.")
-            clients.append(h)
-        else:
-            h.do_send("Agent is currently busy. Please wait for your turn.")
+        if self not in clients:
+            clients.append(self)
+
+        broadcast(data)
+        print(data)
 
 port = 8888
 server = Listener(port, MyHandler)
