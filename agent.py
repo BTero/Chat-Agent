@@ -37,3 +37,4 @@ while not done:
     agent.do_send(choiceInput)
 
 agent.do_close() # cleanup
+sys.exit()
