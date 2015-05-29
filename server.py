@@ -7,7 +7,6 @@ wait_list = []
 
 def broadcast(data):
     global clients
-    print len(clients)
 
     for c in clients:
         c.do_send(data)
@@ -18,12 +17,21 @@ def get_first(iterable, default=None):
             return item
         return default
 
+# def check_wait_list(client):
+#     global wait_list
+#     return any(client == w for w in wait_list)
+
+# def display_options(client):
+#     client.do_send('[1] Complaint\n[2] Question\n[3] Other\nChoose one of the above:')
+
 class MyHandler(Handler):
-    
+
     def on_open(self):
         global clients, wait_list
+        print len(clients)
         if len(clients) < 2:
             clients.append(self)
+            # display_options(self)
         else:
             self.do_send("Agent is currently busy. Please wait until the Agent is available.")
             wait_list.append(self)
