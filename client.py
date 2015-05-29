@@ -48,7 +48,8 @@ class Client(Handler):
     in_chat = False
 
     def on_open(self):
-        print ('Client started')
+        pass
+        # print ('Client started')
 
     def on_close(self):
         print ('Client closed')
@@ -80,7 +81,8 @@ while not done:
     # if not check_wait_list():
     #     options()
 
-    choiceInput = raw_input('> ')
+    # choiceInput = raw_input('> ')
+    choiceInput = sys.stdin.readline().rstrip()
 
     if ':q' in choiceInput:
         client.do_close()
