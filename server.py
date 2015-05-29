@@ -42,7 +42,7 @@ class MyHandler(Handler):
         global clients
         if 'QUIT' in data:
             global done
-            done = False
+            done = True
         else:
             if self in clients:
                 broadcast(data)
