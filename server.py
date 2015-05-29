@@ -1,5 +1,5 @@
-from network import Listener, Handler, poll
-
+from network import Listener, Handler, poll, get_my_ip
+import sys
 
 done = False
 clients = []
@@ -14,10 +14,13 @@ def broadcast(data):
 class MyHandler(Handler):
     
     def on_open(self):
-        print ('Someone has entered the chat.')
+        global clients
+        if len(clients) < 2:
+            clients.append(self)
         
     def on_close(self):
-        print ('Someone has exited the chat.')
+        global clients
+        clients.remove(self)
 
     def on_msg(self, data):
         global clients
@@ -25,15 +28,14 @@ class MyHandler(Handler):
             global done
             done = False
         else:
-            if self not in clients:
-                clients.append(self)
-
             broadcast(data)
             print(data)
 
 port = 8888
 server = Listener(port, MyHandler)
 print ('Server started')
+print 'Server IP Address: ' + str(get_my_ip())
 while not done:
     poll(timeout=0.05)
 server.stop()  # cleanup
+sys.exit()
